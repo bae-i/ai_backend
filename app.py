@@ -1,8 +1,9 @@
 from flask import Flask, jsonify, request
 import random
-import tiktoken
+# import tiktoken
 import openai
 import os
+import re
 
 app = Flask(__name__)
 
@@ -75,7 +76,7 @@ def retrieve_question():
 # Load OpenAI API key and model
 openai.api_key = os.getenv("OPENAI_API_KEY")
 model = "gpt-3.5-turbo"
-encoding = tiktoken.encoding_for_model(model)
+# encoding = tiktoken.encoding_for_model(model)
 
 @app.route('/gpt', methods=['POST'])
 def retrieve_responses_endpoint():
@@ -123,7 +124,8 @@ def retrieve_responses(question, real_response):
     test_messages = [{"role": "system", "content": system_message},
                      {"role": "user", "content": user_message}]
 
-    num_tokens = len(encoding.encode(real_response))
+    # num_tokens = len(encoding.encode(real_response))
+    num_tokens = 0.75 * len(real_response.split(" "))
     # num_tokens = 50
     response1 = openai.ChatCompletion.create(
         model=model,
