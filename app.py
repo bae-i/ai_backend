@@ -125,7 +125,7 @@ def retrieve_responses(question, real_response):
                      {"role": "user", "content": user_message}]
 
     # num_tokens = len(encoding.encode(real_response))
-    num_tokens = 0.75 * len(real_response.split(" "))
+    num_tokens = int(0.75 * len(real_response.split(" ")))
     # num_tokens = 50
     response1 = openai.ChatCompletion.create(
         model=model,
