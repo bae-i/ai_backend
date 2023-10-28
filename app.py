@@ -86,12 +86,12 @@ def retrieve_responses_endpoint():
     if not (question and real_response):
         return jsonify({"error": "Both 'question' and 'real_response' fields are required."}), 400
 
-    response1, response2, response3 = retrieve_responses(question, real_response)
+    answer, response1, response2, response3 = retrieve_responses(question, real_response)
     return jsonify({
+        "answer": answer,
         "first": response1,
         "second": response2,
         "third": response3,
-
     })
 
 def retrieve_responses(question, real_response):
@@ -155,6 +155,12 @@ def retrieve_responses(question, real_response):
 
     answers = [response1.split(' [eos]')[0], response2.split(' [eos]')[0], real_response]
     random.shuffle(answers)
-    return tuple(answers)
-    
-    return 
+
+    # Check the position of 'hello' in the shuffled list
+    if answers[0] == real_response:
+        return_tuple = ('A',) + tuple(answers)
+    elif answers[1] == real_response:
+        return_tuple = ('B',) + tuple(answers)
+    else: return_tuple = ('C',) + tuple(answers)
+
+    return return_tuple
