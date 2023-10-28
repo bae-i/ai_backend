@@ -86,11 +86,12 @@ def retrieve_responses_endpoint():
     if not (question and real_response):
         return jsonify({"error": "Both 'question' and 'real_response' fields are required."}), 400
 
-    response1, response2 = retrieve_responses(question, real_response)
-    print(response1, response2)
+    response1, response2, response3 = retrieve_responses(question, real_response)
     return jsonify({
-        "fake_response_1": response1,
-        "fake_response_2": response2
+        "first": response1,
+        "second": response2,
+        "third": response3,
+
     })
 
 def retrieve_responses(question, real_response):
@@ -152,4 +153,8 @@ def retrieve_responses(question, real_response):
         # max_tokens=num_tokens + 5
     )['choices'][0]['message']['content']
 
-    return response1.split(' [eos]')[0], response2.split(' [eos]')[0]
+    answers = [response1.split(' [eos]')[0], response2.split(' [eos]')[0], real_response]
+    random.shuffle(answers)
+    return tuple(answers)
+    
+    return 
