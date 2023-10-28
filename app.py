@@ -94,30 +94,39 @@ def retrieve_responses_endpoint():
     })
 
 def retrieve_responses(question, real_response):
+    num_tokens = int(0.75 * len(real_response.split(" ")))
+
     """
     Function to generate two fake responses based on the provided question and real_response.
     """
-    system_message = ("""
+    system_message = (f"""
       You are assisting a long-distance couple, Player A and Player B.
       Player A will pose a question, to which Player B will respond.
       Your task is to craft a response that mirrors the style of Player B closely.
       For this exercise, Player A will have to discern which of the responses, yours or Player B's, is authentic.
-      Use similar tone of voice and wording. Follow the same syntax and manner of speaking, but come up with a new answer and be creative!
+      Use similar tone of voice and wording. Keep the same brevity as the real response. Follow the same syntax and manner of speaking, but come up with a new answer and be creative!
       Avoid complicated words, and be straightforward.
       Your generated message should be plausible yet subtly confusing, matching Player B's level of detail and brevity.
       It is imperative that your response constitutes a complete and well-articulated sentence.
-      Do not end on a hanging sentence fragment.
-
+      Absolutely do not end on a hanging sentence fragment.
+      Make sure your response is between {num_tokens} and {num_tokens + 5} tokens.
+                      
+      Use these examples to guide your response:
+    
       Example 1: Question = "What was the best thing that happened to you this week?"
-      Real Response = "Adopting a puppy!"
-      Fake Response 1 = "Going to yoga class!"
-      Fake Response 2 = "Finding my new favorite song!"
+      Real response = "Adopting a puppy!"
+      Fake response 1 = "Going to yoga class! [eos]"
+      Fake response 2 = "Finding my new favorite song! [eos]"
 
       Example 2: Question = "What are you unsatisfied with in our relationship?"
-      Real Response = "not anything big but i wish we could do more fun things together like when we first started dating..."
-      Fake Response 1 = "nothing, i'm very happy with where we're at"
-      Fake Response 2 = "we're always having fun but sometimes i wish we could talk more openly about deeper topics"
-
+      Real response = "not anything big but i wish we could do more fun things together like when we first started dating..."
+      Fake response 1 = "nothing, i'm very happy with where we're at [eos]"
+      Fake response 2 = "we're always having fun but sometimes i wish we could talk more openly about deeper topics [eos]"
+      
+      Example 3: Question = "Where do you see us in 10 years?"
+      Real response = "i don't like to think about the future like that."
+      Fake response 1 = "we'll probably be together still, hopefully with a family [eos]"
+      Fake response 2 = "together or not, i hope we're both happy with thriving careers [eos]"
       """)
     user_message = f"""Question from Player A: {question}\n\nReal response by Player B: {real_response}\n\nFake response 1: """
 
@@ -125,23 +134,22 @@ def retrieve_responses(question, real_response):
                      {"role": "user", "content": user_message}]
 
     # num_tokens = len(encoding.encode(real_response))
-    num_tokens = int(0.75 * len(real_response.split(" ")))
     # num_tokens = 50
     response1 = openai.ChatCompletion.create(
         model=model,
         messages=test_messages,
-        temperature=0.5,
-        max_tokens=num_tokens + 5
+        temperature=0.3,
+        # max_tokens=num_tokens + 5
     )['choices'][0]['message']['content']
 
-    user_message = f"""Question from Player A: {question}\n\nReal response by Player B: {real_response}\n\nFake response: {response1}\n\nA Different Fake response: """
+    user_message = f"""Question from Player A: {question}\n\nReal response by Player B: {real_response}\n\nFake response 1: {response1}\n\nFake response 2: """
     test_messages.pop()
     test_messages.append({"role": "user", "content": user_message})
     response2 = openai.ChatCompletion.create(
         model=model,
         messages=test_messages,
-        temperature=0.6,
-        max_tokens=num_tokens + 5
+        temperature=0.4,
+        # max_tokens=num_tokens + 5
     )['choices'][0]['message']['content']
 
-    return response1, response2
+    return response1.split(' [eos]')[0], response2.split(' [eos]')[0]
