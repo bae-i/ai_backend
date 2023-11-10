@@ -18,7 +18,7 @@ questions = [
     "For what in your life do you feel most grateful?",
     "If you could change anything about the way you were raised, what would it be?",
     "If you could wake up tomorrow having gained any one quality or ability, what would it be?",
-    "If a crystal ball could tell you the truth about yourself, the future or anything else, what would you want to know?",
+    "If a crystal ball could tell you the truth about anything, what would you want to know?",
     "Is there something that you've dreamed of doing for a long time?",
     "What is the greatest accomplishment of your life?",
     "What do you value most in a friendship?",
@@ -28,8 +28,8 @@ questions = [
     "Complete this sentence: 'I wish I had someone with whom I could share...'",
     "What's an embarrassing moment in your life?",
     "When did you last cry?",
-    "If you were to die today with no opportunity to communicate with anyone, what would you most regret not having told someone?",
-    "Your house catches fire. After saving your loved ones and pets, if you could save any one item. What would it be and why?",
+    "If you were to die today, what would you most regret not having told someone?",
+    "Your house catches fire. After saving your loved ones and pets, what one item are you saving and why?",
 
     # Adapted from: https://www.brides.com/questions-to-ask-your-partner-5105339
     "What's the biggest risk you've ever taken that didn't pay off?",
