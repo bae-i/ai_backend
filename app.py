@@ -110,8 +110,6 @@ def retrieve_responses(question, real_response):
       2. Follow the same syntax and manner of speaking.
       3. Come up with a new answer and be creative!
       4. Avoid complicated words, and be straightforward.
-      Reason whether your fake response is plausible yet subtly confusing, matching Player B's level of detail.
-      Make sure your response is between {num_tokens} and {num_tokens + 5} tokens. If not, try again.
                       
       Use these examples to guide your thinking:
     
@@ -129,6 +127,13 @@ def retrieve_responses(question, real_response):
       Real response = "i don't like to think about the future like that :P"
       Fake response 1 = "we'll probably be together still, hopefully with a family :) [eos]"
       Fake response 2 = "together or not, i hope we're both happy with thriving careers :D [eos]"
+
+      Reason whether your fake response is plausible yet subtly confusing, matching Player B's level of detail.
+      Improve your response if it could be more realistic.
+      Reason whether your response is between {num_tokens} and {num_tokens + 5} tokens. Then,
+      1. If your response is less than {num_tokens} tokens, add more detail. 
+      2. If your response is above {num_tokens + 5} tokens, take out some detail.
+      3. Otherwise, keep your response as is.
       
       """)
     user_message = f"""Question = {question}\n\nReal response = {real_response}\n\nFake response 1 = """
