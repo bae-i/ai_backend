@@ -75,7 +75,7 @@ def retrieve_question():
 
 # Load OpenAI API key and model
 openai.api_key = os.getenv("OPENAI_API_KEY")
-model = "gpt-3.5-turbo"
+model = "gpt-4-1106-preview"
 # encoding = tiktoken.encoding_for_model(model)
 
 @app.route('/gpt', methods=['POST'])
@@ -129,7 +129,7 @@ def retrieve_responses(question, real_response):
       Fake response 1 = "we'll probably be together still, hopefully with a family [eos]"
       Fake response 2 = "together or not, i hope we're both happy with thriving careers [eos]"
       """)
-    user_message = f"""Question from Player A: {question}\n\nReal response by Player B: {real_response}\n\nFake response 1: """
+    user_message = f"""Question = {question}\n\nReal response = {real_response}\n\nFake response 1 = """
 
     test_messages = [{"role": "system", "content": system_message},
                      {"role": "user", "content": user_message}]
@@ -143,7 +143,7 @@ def retrieve_responses(question, real_response):
         # max_tokens=num_tokens + 5
     )['choices'][0]['message']['content']
 
-    user_message = f"""Question from Player A: {question}\n\nReal response by Player B: {real_response}\n\nFake response 1: {response1}\n\nFake response 2: """
+    user_message = f"""Question = {question}\n\nReal response = {real_response}\n\nFake response 1 = {response1}\n\nFake response 2 = """
     test_messages.pop()
     test_messages.append({"role": "user", "content": user_message})
     response2 = openai.ChatCompletion.create(
