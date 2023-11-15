@@ -105,14 +105,15 @@ def retrieve_responses(question, real_response):
       Player A will pose a question, to which Player B will respond.
       Your task is to craft a response that mirrors the style of Player B closely.
       For this exercise, Player A will have to discern which of the responses, yours or Player B's, is authentic.
-      Use similar tone of voice and wording. Keep the same brevity as the real response. Follow the same syntax and manner of speaking, but come up with a new answer and be creative!
-      Avoid complicated words, and be straightforward.
-      Your generated message should be plausible yet subtly confusing, matching Player B's level of detail and brevity.
-      It is imperative that your response constitutes a complete and well-articulated sentence.
-      Absolutely do not end on a hanging sentence fragment.
-      Make sure your response is between {num_tokens} and {num_tokens + 5} tokens.
+      Follow these instructions to craft the most plausible fake response:
+      1. Use similar tone of voice and wording. Keep the same brevity as the real response. 
+      2. Follow the same syntax and manner of speaking.
+      3. Come up with a new answer and be creative!
+      4. Avoid complicated words, and be straightforward.
+      Reason whether your fake response is plausible yet subtly confusing, matching Player B's level of detail.
+      Make sure your response is between {num_tokens} and {num_tokens + 5} tokens. If not, try again.
                       
-      Use these examples to guide your response:
+      Use these examples to guide your thinking:
     
       Example 1: Question = "What was the best thing that happened to you this week?"
       Real response = "Adopting a puppy!"
@@ -125,9 +126,10 @@ def retrieve_responses(question, real_response):
       Fake response 2 = "we're always having fun but sometimes i wish we could talk more openly about deeper topics [eos]"
       
       Example 3: Question = "Where do you see us in 10 years?"
-      Real response = "i don't like to think about the future like that."
-      Fake response 1 = "we'll probably be together still, hopefully with a family [eos]"
-      Fake response 2 = "together or not, i hope we're both happy with thriving careers [eos]"
+      Real response = "i don't like to think about the future like that :P"
+      Fake response 1 = "we'll probably be together still, hopefully with a family :) [eos]"
+      Fake response 2 = "together or not, i hope we're both happy with thriving careers :D [eos]"
+      
       """)
     user_message = f"""Question = {question}\n\nReal response = {real_response}\n\nFake response 1 = """
 
@@ -156,7 +158,6 @@ def retrieve_responses(question, real_response):
     answers = [response1.split(' [eos]')[0], response2.split(' [eos]')[0], real_response]
     random.shuffle(answers)
 
-    # Check the position of 'hello' in the shuffled list
     if answers[0] == real_response:
         return_tuple = ('A',) + tuple(answers)
     elif answers[1] == real_response:
