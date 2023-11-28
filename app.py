@@ -29,7 +29,7 @@ questions = [
     "What's an embarrassing moment in your life?",
     "When did you last cry?",
     "If you were to die today, what would you most regret not having told someone?",
-    "Your house catches fire. After saving your loved ones and pets, what one item are you saving and why?",
+    "Your house catches fire. After saving your loved ones, what item are you saving and why?",
 
     # Adapted from: https://www.brides.com/questions-to-ask-your-partner-5105339
     "What's the biggest risk you've ever taken that didn't pay off?",
