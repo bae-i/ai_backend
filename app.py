@@ -127,7 +127,7 @@ def retrieve_responses(question, real_response):
     )['choices'][0]['message']['content']
 
     system_message2 = (
-        '''
+        f'''
         Modify two fake responses to a question to match the syntax of the real response closely.
 
         Follow these instructions:
