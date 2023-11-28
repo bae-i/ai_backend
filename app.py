@@ -95,72 +95,59 @@ def retrieve_responses_endpoint():
     })
 
 def retrieve_responses(question, real_response):
+    '''
+    Function to generate two fake responses based on the provided question and real_response.
+    Uses LLM Chaining to break task into two steps: content generation and syntax matching.
+    '''
+
     num_tokens = int(0.75 * len(real_response.split(" ")))
 
-    """
-    Function to generate two fake responses based on the provided question and real_response.
-    """
-    system_message = (f"""
-      You are assisting a long-distance couple, Player A and Player B.
-      Player A will pose a question, to which Player B will respond.
-      Your task is to craft a response that mirrors the style of Player B closely.
-      For this exercise, Player A will have to discern which of the responses, yours or Player B's, is authentic.
-      Follow these instructions to craft the most plausible fake response:
-      1. Use similar tone of voice and wording. Keep the same brevity as the real response. 
-      2. Follow the same syntax and manner of speaking.
-      3. Come up with a new answer and be creative!
-      4. Avoid complicated words, and be straightforward.
-                      
-      Use these examples to guide your thinking:
-    
-      Example 1: Question = "What was the best thing that happened to you this week?"
-      Real response = "Adopting a puppy!"
-      Fake response 1 = "Going to yoga class! [eos]"
-      Fake response 2 = "Finding my new favorite song! [eos]"
+    system_message1 = (
+        '''
+        Generate two fake responses to a question to match the style of the real response closely.
 
-      Example 2: Question = "What are you unsatisfied with in our relationship?"
-      Real response = "not anything big but i wish we could do more fun things together like when we first started dating..."
-      Fake response 1 = "nothing, i'm very happy with where we're at [eos]"
-      Fake response 2 = "we're always having fun but sometimes i wish we could talk more openly about deeper topics [eos]"
-      
-      Example 3: Question = "Where do you see us in 10 years?"
-      Real response = "i don't like to think about the future like that :P"
-      Fake response 1 = "we'll probably be together still, hopefully with a family :) [eos]"
-      Fake response 2 = "together or not, i hope we're both happy with thriving careers :D [eos]"
+        Follow these instructions:
+        1. Use similar tone of voice and wording as the real response.
+        2. Follow the same structure and manner of speaking as the real response.
+        3. Come up with a new answer and be creative! The core idea of the fake responses should be different from the real response.
+        4. Avoid complicated words, and be straightforward.
 
-      Reason whether your fake response is plausible yet subtly confusing, matching Player B's level of detail.
-      Improve your response if it could be more realistic.
-      Reason whether your response is between {num_tokens} and {num_tokens + 5} tokens. Then,
-      1. If your response is less than {num_tokens} tokens, add more detail. 
-      2. If your response is above {num_tokens + 5} tokens, take out some detail.
-      3. Otherwise, keep your response as is.
-      
-      """)
-    user_message = f"""Question = {question}\n\nReal response = {real_response}\n\nFake response 1 = """
+        Separate the two responses by a newline.
+        '''
+    )
 
-    test_messages = [{"role": "system", "content": system_message},
+    user_message = f'''Question = {question}\n\nReal response = {real_response}\n\nFake responses='''
+    test_messages = [{"role": "system", "content": system_message1},
                      {"role": "user", "content": user_message}]
 
-    # num_tokens = len(encoding.encode(real_response))
-    # num_tokens = 50
-    response1 = openai.ChatCompletion.create(
+    fake_responses = openai.ChatCompletion.create(
         model=model,
         messages=test_messages,
-        temperature=0.3,
-        # max_tokens=num_tokens + 5
+        temperature=0.4
     )['choices'][0]['message']['content']
 
-    user_message = f"""Question = {question}\n\nReal response = {real_response}\n\nFake response 1 = {response1}\n\nFake response 2 = """
-    test_messages.pop()
-    test_messages.append({"role": "user", "content": user_message})
-    response2 = openai.ChatCompletion.create(
+    system_message2 = (
+        '''
+        Modify two fake responses to a question to match the syntax of the real response closely.
+
+        Follow these instructions:
+        1. Keep the same brevity as the real response. If your response is less than {num_tokens - 5} tokens, add more detail. If your response is above {num_tokens + 5} tokens, take out some detail.
+        2. Follow the same syntax as the real response. Use similar forms of punctuation and word choice. Follow the same language patterns: if the user does not capitalize or use punctuation, do the same.
+        3. Retain the same meaning as the current fake responses. Only change the responses to be more realistic from a romantic partner.
+        '''
+    )
+
+    user_message2 = f"""Question = {question}\n\nReal response = {real_response}\n\nFake responses= {fake_responses}\n\nModified fake responses="""
+    test_messages2 = [{"role": "system", "content": system_message2},
+                     {"role": "user", "content": user_message2}]
+
+    fake_responses_modified = openai.ChatCompletion.create(
         model=model,
-        messages=test_messages,
-        temperature=0.4,
-        # max_tokens=num_tokens + 5
+        messages=test_messages2,
+        temperature=0.3
     )['choices'][0]['message']['content']
 
-    answers = [response1.split(' [eos]')[0], response2.split(' [eos]')[0], real_response]
+    answers = fake_responses_modified.split('\n\n') + [real_response]
     random.shuffle(answers)
 
     if answers[0] == real_response:
