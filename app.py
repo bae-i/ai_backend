@@ -132,7 +132,7 @@ def retrieve_responses(question, real_response):
 
         Follow these instructions:
         1. Keep the same brevity as the real response. If your response is less than {num_tokens - 5} tokens, add more detail. If your response is above {num_tokens + 5} tokens, take out some detail.
-        2. Follow the same syntax as the real response. Use similar forms of punctuation and word choice. Follow the same language patterns: if the user does not capitalize or use punctuation, do the same.
+        2. Follow the same syntax as the real response. Follow the same capitalization and punctuation as the real response. Use similar word choice. 
         3. Retain the same meaning as the current fake responses. Only change the responses to be more realistic from a romantic partner.
         '''
     )
@@ -144,7 +144,7 @@ def retrieve_responses(question, real_response):
     fake_responses_modified = openai.ChatCompletion.create(
         model=model,
         messages=test_messages2,
-        temperature=0.3
+        temperature=0.1
     )['choices'][0]['message']['content']
 
     answers = fake_responses_modified.split('\n\n') + [real_response]
