@@ -111,6 +111,8 @@ def retrieve_responses(question, real_response):
         2. Follow the same structure and manner of speaking as the real response.
         3. Come up with a new answer and be creative! The core idea of the fake responses should be different from the real response.
         4. Avoid complicated words, and be straightforward.
+
+        Separate the two responses by a newline.
         '''
     )
 
@@ -130,8 +132,9 @@ def retrieve_responses(question, real_response):
 
         Follow these instructions:
         1. Keep the same brevity as the real response. If your response is less than {num_tokens - 5} tokens, add more detail. If your response is above {num_tokens + 5} tokens, take out some detail.
-        2. Follow the same capitalization and punctuation as the real response. If the real response does not end with punctuation, do the same. Use similar word choice.
-        3. Retain the same meaning as the current fake responses. Change the responses to be more realistic from a romantic partner.
+        2. Mimick the grammar of the real response. Use the same capitalization, punctuation, and sentence syntax as the real response. If the real response does not end with punctuation, do the same.
+        3. Use similar word choice.
+        4. Retain the same meaning as the current fake responses. Change the responses to be more realistic from a romantic partner.
 
         Separate the two responses by a newline.
         '''
