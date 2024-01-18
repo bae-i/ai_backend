@@ -1,9 +1,8 @@
 from flask import Flask, jsonify, request
 import random
-# import tiktoken
 import openai
 import os
-import re
+# import tiktoken
 
 app = Flask(__name__)
 
@@ -113,6 +112,20 @@ def retrieve_responses(question, real_response):
         4. Avoid complicated words, and be straightforward.
 
         Separate the two responses by a newline.
+
+        Use these examples to guide your thinking:
+
+        Example 1: Question = "What was the best thing that happened to you this week?"
+        Real response = "Adopting a puppy!"
+        Fake responses = "Going to yoga class!\n\nFinding my new favorite song!"
+
+        Example 2: Question = "What are you unsatisfied with in our relationship?"
+        Real response = "not anything big but i wish we could do more fun things together like when we first started dating..."
+        Fake responses = "nothing, i'm very happy with where we're at\n\nwe're always having fun but sometimes i wish we could talk more openly about deeper topics..."
+
+        Example 3: Question = "Where do you see us in 10 years?"
+        Real response = "i don't like to think about the future like that :P"
+        Fake responses = "we'll probably be together still, hopefully with a family :)\n\ntogether or not, i hope we're both happy with thriving careers :D"
         '''
     )
 
