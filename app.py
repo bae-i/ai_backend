@@ -150,23 +150,6 @@ def retrieve_responses(question, real_response):
         4. Retain the same meaning as the current fake responses. Change the responses to be more realistic from a romantic partner.
 
         Separate the two responses by a newline.
-
-        Use these examples to guide your thinking:
-
-        Example 1: Question = "What was the best thing that happened to you this week?"
-        Real response = "Adopting a puppy!"
-        Fake responses = "i want to go to yoga class\n\nfinding my new favorite song that I have been listening to all week!"
-        Modified fake responses = "Going to yoga class!\n\nFinding my new favorite song!"
-
-        Example 2: Question = "What are you unsatisfied with in our relationship?"
-        Real response = "not anything big but i wish we could do more fun things together like when we first started dating..."
-        Fake response = "Nothing, I'm very happy with where we're at\n\nI wish we had deeper talks..."
-        Modified fake responses = "nothing, i'm very happy with where we're at\n\nwe're always having fun but sometimes i wish we could talk more openly about deeper topics..."
-
-        Example 3: Question = "Where do you see us in 10 years?"
-        Real response = "i don't like to think about the future like that :P"
-        Fake responses = "We'll probably be together still, hopefully with a family.\n\nit doesn't really matter if we are together, all that i hope for is that we are both happy and have nice lives with thriving careers"
-        Modified fake responses = "we'll probably be together still, hopefully with a family :)\n\ntogether or not, i hope we're both happy with thriving careers :D"
         '''
     )
 
